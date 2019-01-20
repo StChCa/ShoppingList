@@ -1,10 +1,12 @@
 package com.example.cardo.shoppinglist;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.R.color;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -23,7 +25,9 @@ public class CalculatorView extends AppCompatActivity {
     ImageView aStar;
     ImageView bStar;
 
+    // Hash table to keep track of the cost and size values.
     Hashtable<Integer,Double> numLocation = new Hashtable<Integer, Double>();
+
     int selected = 1;
 
     public void initialize() {
@@ -42,6 +46,8 @@ public class CalculatorView extends AppCompatActivity {
         costB = findViewById(R.id.itemBCost);
         sizeA = findViewById(R.id.itemASize);
         sizeB = findViewById(R.id.itemBSize);
+
+        // The next lines are nessicayr to prevent keyboard when click on text.
         costA.setShowSoftInputOnFocus(false);
         costB.setShowSoftInputOnFocus(false);
         sizeA.setShowSoftInputOnFocus(false);
@@ -112,93 +118,76 @@ public class CalculatorView extends AppCompatActivity {
     }
 
     public void num1(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .01;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.01);
     }
 
     public void num2(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .02;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.02);
     }
 
     public void num3(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .03;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.03);
     }
 
     public void num4(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .04;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.04);
     }
 
     public void num5(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .05;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.05);
     }
 
     public void num6(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .06;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.06);
     }
 
     public void num7(View view) {
-        double prev = numLocation.get(selected);
-        double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .07;
-        numLocation.replace(selected, prev, changed);
-
-        updateValues();
+        adjust(.07);
     }
 
     public void num8(View view) {
+        adjust(.08);
+    }
+
+    public void num9(View view) {
+        adjust(.09);
+    }
+
+    public void adjust(double keyValue){
         double prev = numLocation.get(selected);
         double changed = prev;
         changed = moveDecimal(changed);
-        changed += .08;
+        changed += keyValue;
         numLocation.replace(selected, prev, changed);
 
         updateValues();
     }
 
-    public void num9(View view) {
+    public void backSpace(View view){
         double prev = numLocation.get(selected);
         double changed = prev;
-        changed = moveDecimal(changed);
-        changed += .09;
-        numLocation.replace(selected, prev, changed);
+        if (00.00 != changed){
+            changed /= 10;
+        }
 
+        changed = truncDecimals(changed);
+        numLocation.replace(selected, prev, changed);
         updateValues();
+    }
+
+    /*
+     this function truncates back to 2 values. it is nessicary. dont delete it.
+     */
+    public double truncDecimals(double nonTruncated){
+        double truncated;
+        double a;
+        int i;
+        a = nonTruncated * 100;
+        i = (int)a;
+
+        truncated = i;
+        truncated = (double)truncated / 100;
+        return truncated;
     }
 
 }
