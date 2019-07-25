@@ -25,6 +25,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
+
+//import com.garmin.android.apps.connectiq.sample.comm.adapter.IQDeviceAdapter;
+import com.garmin.android.connectiq.ConnectIQ;
+import com.garmin.android.connectiq.ConnectIQ.ConnectIQListener;
+import com.garmin.android.connectiq.ConnectIQ.IQConnectType;
+import com.garmin.android.connectiq.ConnectIQ.IQDeviceEventListener;
+import com.garmin.android.connectiq.ConnectIQ.IQSdkErrorStatus;
+import com.garmin.android.connectiq.IQDevice;
+import com.garmin.android.connectiq.IQDevice.IQDeviceStatus;
+import com.garmin.android.connectiq.exception.InvalidStateException;
+import com.garmin.android.connectiq.exception.ServiceUnavailableException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +44,41 @@ public class MainActivity extends AppCompatActivity {
     public static ItemCollection masterList = new ItemCollection();
     private String inName,inDesc,inCat;
     public String path;
+
+    private ConnectIQ mConnectIQ;
+    private TextView mEmptyView;
+    private IQDeviceAdapter mAdapter;
+    private boolean mSdkReady = false;
+
+    private IQDeviceEventListener mDeviceEventListener = new IQDeviceEventListener() {
+
+        @Override
+        public void onDeviceStatusChanged(IQDevice device, IQDeviceStatus status) {
+            mAdapter.updateDeviceStatus(device, status);
+        }
+
+    };
+    private ConnectIQListener mListener = new ConnectIQListener() {
+
+        @Override
+        public void onInitializeError(IQSdkErrorStatus errStatus) {
+            if( null != mEmptyView )
+                mEmptyView.setText("ConnectIQListener Error!");
+            mSdkReady = false;
+        }
+
+        @Override
+        public void onSdkReady() {
+            loadDevices();
+            mSdkReady = true;
+        }
+
+        @Override
+        public void onSdkShutDown() {
+            mSdkReady = false;
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // context assigned here because it must be done after onCreate
         context = this.getApplicationContext();
         path = context.getFilesDir().getPath();
+        setUpCIQ();
 
 
         masterList.createFileLoc(path);
@@ -50,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
 //        File file = new File(path + "/masterList.txt");
 
         masterList.load();
+    }
+
+    private void setUpCIQ() {
+
+        mAdapter = new IQDeviceAdapter(this);
+        mConnectIQ = ConnectIQ.getInstance(this, IQConnectType.WIRELESS);
+        
+        // Initialize the SDK
+        mConnectIQ.initialize(this, true, mListener);
     }
 
     public void openAllList(View view) {
@@ -134,6 +191,36 @@ public class MainActivity extends AppCompatActivity {
     public static ItemCollection getMasterList() {
 
         return masterList;
+    }
+
+    public void loadDevices() {
+        // Retrieve the list of known devices
+        try {
+            List<IQDevice> devices = mConnectIQ.getKnownDevices();
+
+            if (devices != null) {
+                System.out.println(devices);
+                mAdapter.setDevices(devices);
+
+                // Let's register for device status updates.  By doing so we will
+                // automatically get a status update for each device so we do not
+                // need to call getStatus()
+                for (IQDevice device : devices) {
+                    mConnectIQ.registerForDeviceEvents(device, mDeviceEventListener);
+                }
+            }
+
+        } catch (InvalidStateException e) {
+            // This generally means you forgot to call initialize(), but since
+            // we are in the callback for initialize(), this should never happen
+        } catch (ServiceUnavailableException e) {
+            // This will happen if for some reason your app was not able to connect
+            // to the ConnectIQ service running within Garmin Connect Mobile.  This
+            // could be because Garmin Connect Mobile is not installed or needs to
+            // be upgraded.
+            if( null != mEmptyView )
+                mEmptyView.setText("Service UNNAvailable!");
+        }
     }
 
     public static void TESTsave(File file) {
