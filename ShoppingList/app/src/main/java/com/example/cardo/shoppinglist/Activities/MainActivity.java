@@ -47,13 +47,11 @@ public class MainActivity extends AppCompatActivity {
     public void openAllList(View view) {
         // open the all list activity
         Intent DisplayAllActivity = new Intent(MainActivity.this, com.example.cardo.shoppinglist.Activities.DisplayAllActivity.class);
-
         startActivity(DisplayAllActivity);
     }
 
     public void openGroceryList(View view){
         Intent GrocActivity = new Intent(MainActivity.this, com.example.cardo.shoppinglist.Activities.DisplayGroceryActivity.class);
-
         startActivity(GrocActivity);
     }
 

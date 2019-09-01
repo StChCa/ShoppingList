@@ -33,7 +33,13 @@ public class DisplayGroceryActivity extends ListActivityTemplate{
     Context context;
 
     // Resource Identifiers
-    int resActivity = R.layout.activity_display_all;
-    int resList = R.id.AllListList;
+    int resActivity = R.layout.activity_display_grocery;
+    int resList = R.id.GroceryListList;
+
+    public DisplayGroceryActivity(){
+        super();
+        super.resActivity = resActivity;
+        super.resList = resList;
+    }
 
 }
