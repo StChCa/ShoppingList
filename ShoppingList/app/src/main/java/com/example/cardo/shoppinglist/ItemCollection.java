@@ -53,7 +53,7 @@ public class ItemCollection {
     public int indexOfThisString(String nameDescCat){
 
         for(int i = 0; i < numItems; i++){
-            if (list.get(i).toString().equals(nameDescCat)){
+            if (list.get(i).toSaveString().equals(nameDescCat)){
                 return i;
             }
         }
@@ -76,6 +76,11 @@ public class ItemCollection {
         return retStr;
     }
 
+    // *********************************************************************************
+    // Name: save
+    // Type: File IO reader
+    // Reads the entire contents of a file on the device to GlobalObjects.MASTER_LIST
+    // *********************************************************************************
     public void save(){
 
         FileOutputStream fos = null;
@@ -101,11 +106,11 @@ public class ItemCollection {
 
                     Item target = this.valueAt(i);
 
-                    fos.write(target.getName().getBytes());
-                    fos.write(",".getBytes());
-                    fos.write(target.getDescription().getBytes());
-                    fos.write(",".getBytes());
-                    fos.write(target.getCategory().getBytes());
+                    // Get saveString from item.
+                    String toSave = target.toSaveString();
+
+                    // Write saveString to file.
+                    fos.write(toSave.getBytes());
 
                     if (i < this.getLength()){
                         fos.write("\n".getBytes());
@@ -126,6 +131,11 @@ public class ItemCollection {
         }
     }
 
+    // *********************************************************************************
+    // Name: load
+    // Type: File IO writer
+    // Writes the entire contents of GlobalObjects.MASTER_LIST to a file on the device
+    // *********************************************************************************
     public void load(){
         this.reset();
 
@@ -159,10 +169,13 @@ public class ItemCollection {
 
                 String[] attributes = line.split(",");
 
+                // Create new Item and set its attributes based on the saveFile.
                 Item inItem = new Item();
+
                 inItem.setName(attributes[0]);
-//                inItem.setDescription(attributes[1]);
-//                inItem.setCategory(attributes[2]);
+                inItem.setDescription(attributes[1]);
+                inItem.setCategory(attributes[2]);
+                inItem.setListID(GlobalObjects.LIST_TYPES.valueOf(attributes[3]));
 
                 this.addItem(inItem);
             }

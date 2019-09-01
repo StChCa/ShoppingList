@@ -26,14 +26,18 @@ import java.util.List;
 // **************************************************************************
 // Generate A list of "All" type. Control user input for this Type.
 // **************************************************************************
-public class DisplayAllActivity extends ListActivityTemplate{
+public class DisplayAllActivity extends ListActivityBase{
 
-    // Instantiating these variables hides the super's variables and uses these.
-    final GlobalObjects.LIST_TYPES LIST_ID = GlobalObjects.LIST_TYPES.ALL;
-    Context context;
-
-    // Resource Identifirs
-    int resActivity = R.layout.activity_display_all;
-    int resList = R.id.AllListList;
+    // **************************************************************************
+    // Name: DisplayAllActivity
+    // Type: Constructor
+    // purpose set the values of the parent class.
+    // **************************************************************************
+    public DisplayAllActivity(){
+        super();
+        LIST_ID = GlobalObjects.LIST_TYPES.ALL;
+        resActivity = R.layout.activity_display_all;
+        resList = R.id.AllListList;
+    }
 
 }

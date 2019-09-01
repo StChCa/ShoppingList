@@ -24,9 +24,9 @@ import com.example.cardo.shoppinglist.R;
 
 import java.util.List;
 
-public class ListActivityTemplate extends AppCompatActivity{
+public class ListActivityBase extends AppCompatActivity{
 
-    final GlobalObjects.LIST_TYPES LIST_ID = GlobalObjects.LIST_TYPES.ALL;
+    GlobalObjects.LIST_TYPES LIST_ID;
     ItemCollection masterList = GlobalObjects.MASTER_LIST;
     Context context;
     boolean confirmation = false;
@@ -36,9 +36,9 @@ public class ListActivityTemplate extends AppCompatActivity{
     private ArrayAdapter arrayAdapter;
     private String inName,inDesc,inCat;
 
-    // Resource Identifirs
-    int resActivity = R.layout.activity_display_all;
-    int resList = R.id.AllListList;
+    // Resource Identifiers
+    int resActivity;
+    int resList;
 
     private ListView lv;
 
@@ -172,7 +172,7 @@ public class ListActivityTemplate extends AppCompatActivity{
     // purpose: Switch to a CalculatorView that allows user to calculate values.
     // *************************************************************************************
     public void openCalculator(View view) {
-        Intent CalculatorActivity = new Intent(ListActivityTemplate.this, CalculatorView.class);
+        Intent CalculatorActivity = new Intent(ListActivityBase.this, CalculatorView.class);
 
         startActivity(CalculatorActivity);
     }

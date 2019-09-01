@@ -26,20 +26,19 @@ import java.util.List;
 // **************************************************************************
 // Generate A list of "All" type. Control user input for this Type.
 // **************************************************************************
-public class DisplayGroceryActivity extends ListActivityTemplate{
+public class DisplayGroceryActivity extends ListActivityBase{
 
     // What type of list this is.
-    final GlobalObjects.LIST_TYPES LIST_ID = GlobalObjects.LIST_TYPES.GROCERY;
-    Context context;
 
-    // Resource Identifiers
-    int resActivity = R.layout.activity_display_grocery;
-    int resList = R.id.GroceryListList;
 
     public DisplayGroceryActivity(){
         super();
-        super.resActivity = resActivity;
-        super.resList = resList;
+        LIST_ID = GlobalObjects.LIST_TYPES.GROCERY;
+        //context = getApplicationContext();
+
+        // Resource Identifiers
+        resActivity = R.layout.activity_display_grocery;
+        resList = R.id.GroceryListList;
     }
 
 }

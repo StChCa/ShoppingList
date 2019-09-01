@@ -29,10 +29,16 @@ public class GlobalObjects {
     public static ItemCollection getItemsOfType(GlobalObjects.LIST_TYPES type){
         ItemCollection retCollection = new ItemCollection();
 
-        for (int idx = 0; idx < MASTER_LIST.getLength(); idx++) {
-
-            if ( MASTER_LIST.valueAt(idx).getListID() == type){
+        if ( type == LIST_TYPES.ALL ){
+            for (int idx = 0; idx < MASTER_LIST.getLength(); idx++) {
                 retCollection.addItem(MASTER_LIST.valueAt(idx));
+            }
+        } else{
+            for (int idx = 0; idx < MASTER_LIST.getLength(); idx++) {
+
+                if ( MASTER_LIST.valueAt(idx).getListID() == type){
+                    retCollection.addItem(MASTER_LIST.valueAt(idx));
+                }
             }
         }
 

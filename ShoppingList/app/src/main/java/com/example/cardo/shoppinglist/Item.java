@@ -43,8 +43,44 @@ public class Item {
 
     }
 
+    // *********************************************************************************
+    // Name: toSaveString
+    // Returns: String ( format: name,description,category,listID )
+    // Generate the item to be stored in the CSV for this item.
+    // *********************************************************************************
+    public String toSaveString(){
+        String retString = name+","+description+","+category+","+listID;
+        return retString;
+    }
+
+    // *********************************************************************************
+    // Name: toString
+    // Returns: String ( format: Format to be displayed to user )
+    // This is for aesthetics. not for manipulating data.
+    // *********************************************************************************
     public String toString(){
-        String retString = name +", "+ description +", " + category + ", List ID = " + listID;
+
+        // Output string applying commas when necessary
+        String retString = "";
+        if( !this.getName().isEmpty()){
+            retString += this.getName();
+        } else {
+            retString += "";
+        }
+
+        if( !this.getDescription().isEmpty()){
+            System.out.println("Rainbow Bridge: " + this.getDescription());
+            retString += ", " + this.getDescription();
+        } else{
+            retString += "";
+        }
+
+        if( !this.getCategory().isEmpty() ){
+            retString += ", " + this.getCategory();
+        } else{
+            retString += "";
+        }
+
         return retString;
     }
 }
