@@ -55,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(GrocActivity);
     }
 
+    public void openWishList(View view){
+        Intent WishActivity = new Intent(MainActivity.this, com.example.cardo.shoppinglist.Activities.DisplayWishActivity.class);
+        startActivity(WishActivity);
+    }
+
+    public void openToDoList(View view){
+        Intent toDoList = new Intent(MainActivity.this, com.example.cardo.shoppinglist.Activities.DisplayToDoActivity.class);
+        startActivity(toDoList);
+    }
 
     public void addItemAlert(View view) {
         // Opens an alert to take input for item to be added

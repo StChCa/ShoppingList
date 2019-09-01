@@ -7,7 +7,9 @@ public class GlobalObjects {
     public static enum LIST_TYPES {
         ALL,
         SHOPPING,
-        GROCERY
+        GROCERY,
+        WISH,
+        TODO
     }
 
     public static ItemCollection MASTER_LIST = new ItemCollection();

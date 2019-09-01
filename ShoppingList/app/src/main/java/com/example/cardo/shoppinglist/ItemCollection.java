@@ -53,7 +53,7 @@ public class ItemCollection {
     public int indexOfThisString(String nameDescCat){
 
         for(int i = 0; i < numItems; i++){
-            if (list.get(i).toSaveString().equals(nameDescCat)){
+            if (list.get(i).toString().equals(nameDescCat)){
                 return i;
             }
         }

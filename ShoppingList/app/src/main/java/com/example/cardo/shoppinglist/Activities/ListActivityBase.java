@@ -70,7 +70,9 @@ public class ListActivityBase extends AppCompatActivity{
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
                 lv.getSelectedItem();
-                // I don't know what the value of "String" is here. WTF? but it works so I roll with it.
+
+                String itemStrToBeDeleted = (String) lv.getItemAtPosition(position);
+                System.out.println("Barf Bag: " + itemStrToBeDeleted);
                 Item itemToBeRemoved = masterList.valueAt(masterList.indexOfThisString((String) lv.getItemAtPosition(position)));
                 if (confirmRemoval(itemToBeRemoved)) {
                     masterList.removeItem(itemToBeRemoved);

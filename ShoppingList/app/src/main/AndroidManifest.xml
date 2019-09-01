@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".Activities.DisplayAllActivity"></activity>
         <activity android:name=".Activities.DisplayGroceryActivity"></activity>
+        <activity android:name=".Activities.DisplayWishActivity"></activity>
+        <activity android:name=".Activities.DisplayToDoActivity"></activity>
         <activity android:name=".CalculatorView"
             android:windowSoftInputMode="stateHidden" />
     </application>

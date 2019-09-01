@@ -40,4 +40,24 @@
         app:layout_constraintStart_toStartOf="@+id/AllListButton"
         app:layout_constraintTop_toBottomOf="@+id/AllListButton" />
 
+    <Button
+        android:id="@+id/WishListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:onClick="openWishList"
+        android:text="Wish List"
+        app:layout_constraintStart_toStartOf="@+id/GroceryListButton"
+        app:layout_constraintTop_toBottomOf="@+id/GroceryListButton" />
+
+    <Button
+        android:id="@+id/ToDoListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:onClick="openToDoList"
+        android:text="ToDo's"
+        app:layout_constraintStart_toStartOf="@+id/WishListButton"
+        app:layout_constraintTop_toBottomOf="@+id/WishListButton" />
+
 </android.support.constraint.ConstraintLayout>
