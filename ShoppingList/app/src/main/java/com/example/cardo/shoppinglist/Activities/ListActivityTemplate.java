@@ -1,9 +1,9 @@
-package com.example.cardo.shoppinglist;
+package com.example.cardo.shoppinglist.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,58 +16,61 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.example.cardo.shoppinglist.CalculatorView;
+import com.example.cardo.shoppinglist.GlobalObjects;
+import com.example.cardo.shoppinglist.Item;
+import com.example.cardo.shoppinglist.ItemCollection;
+import com.example.cardo.shoppinglist.R;
+
 import java.util.List;
 
-public class DisplayAllActivity extends AppCompatActivity {
+public class ListActivityTemplate extends AppCompatActivity{
 
-    ItemCollection masterList;
-    ListView displayList;
+    final GlobalObjects.LIST_TYPES LIST_ID = GlobalObjects.LIST_TYPES.ALL;
+    ItemCollection masterList = GlobalObjects.MASTER_LIST;
     Context context;
     boolean confirmation = false;
 
     // list access variables
-    private List<String> listList;
+    private List<String> typedList;
     private ArrayAdapter arrayAdapter;
     private String inName,inDesc,inCat;
+
+    // Resource Identifirs
+    int resActivity = R.layout.activity_display_all;
+    int resList = R.id.AllListList;
 
     private ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_all);
+        setContentView(resActivity);
 
         context = getApplicationContext();
 
-        displayList = findViewById(R.id.AllListList);
-        masterList = MainActivity.getMasterList();
-
         // list access var initialization
-        listList = masterList.convertToStringList(masterList);
+        ItemCollection typedItems = GlobalObjects.getItemsOfType(LIST_ID);
+        typedList = typedItems.convertToStringList(typedItems);
 
+        // Identify the List Resource object that displays the list
+        lv = findViewById(resList);
 
-        lv = findViewById(R.id.AllListList);
-
-        arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, listList);
+        arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, typedList);
 
         lv.setAdapter(arrayAdapter);
 
 
-        //populateDisplayList(listList, arrayAdapter);
+        //populateDisplayList(typedList, arrayAdapter);
         updateList(arrayAdapter);
 
+        // On ListItemCLick
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 
-                Item selItem = (Item) lv.getSelectedItem(); //
-                //String value = selItem.getTheValue(); //getter method
-
                 lv.getSelectedItem();
-
+                // I don't know what the value of "String" is here. WTF? but it works so I roll with it.
                 Item itemToBeRemoved = masterList.valueAt(masterList.indexOfThisString((String) lv.getItemAtPosition(position)));
                 if (confirmRemoval(itemToBeRemoved)) {
                     masterList.removeItem(itemToBeRemoved);
@@ -84,16 +87,22 @@ public class DisplayAllActivity extends AppCompatActivity {
         });
     }
 
-
     private boolean confirmRemoval(Item itemToBeRemoved) {
         return true;
     }
-
+    // *************************************************************************************
+    // Function Name: updateList
+    // purpose: Update the list on the screen to reflect changes.
+    // *************************************************************************************
     private void updateList(ArrayAdapter arrayAdapter){
         arrayAdapter.notifyDataSetChanged();
-
     }
 
+    // *************************************************************************************
+    // Function Name: addItemAlert
+    // purpose: Prompt user with a dialog box to add an item to the MasterList.
+    // Adds the item to the list with the GlobalObjects.LIST_TYPE item for this class.
+    // *************************************************************************************
     public void addItemAlert(View view) {
         // Opens an alert to take input for item to be added
 
@@ -102,9 +111,9 @@ public class DisplayAllActivity extends AppCompatActivity {
 
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
-// Set up the input
+        // Set up the input
         final EditText name = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         name.setHint("Name");
         name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         layout.addView(name);
@@ -121,7 +130,7 @@ public class DisplayAllActivity extends AppCompatActivity {
 
         builder.setView(layout);
 
-// Set up the buttons
+        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -130,10 +139,10 @@ public class DisplayAllActivity extends AppCompatActivity {
                 inCat = cat.getText().toString();
 
                 if (inName != null && !inName.isEmpty()){
-                    Item itm = new Item(inName, inDesc, inCat);
+                    Item itm = new Item(LIST_ID, inName, inDesc, inCat);
                     masterList.addItem(itm);
 
-                    File file = new File (masterList.getFilePath() + "/masterList.txt");
+                    //File file = new File (masterList.getFilePath() + "/masterList.txt");
 
                     Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
 
@@ -158,9 +167,14 @@ public class DisplayAllActivity extends AppCompatActivity {
 
     }
 
+    // *************************************************************************************
+    // Function Name: openCalculator
+    // purpose: Switch to a CalculatorView that allows user to calculate values.
+    // *************************************************************************************
     public void openCalculator(View view) {
-        Intent CalculatorActivity = new Intent(DisplayAllActivity.this, CalculatorView.class);
+        Intent CalculatorActivity = new Intent(ListActivityTemplate.this, CalculatorView.class);
 
         startActivity(CalculatorActivity);
     }
+
 }
